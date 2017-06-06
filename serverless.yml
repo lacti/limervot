@@ -1,0 +1,29 @@
+service: limervot
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: production
+  region: ap-northeast-2
+
+functions:
+  express:
+    handler: handler.express
+    environment:
+      CHANNEL_SECRET: ${env:CHANNEL_SECRET}
+      CHANNEL_ACCESS_TOKEN: ${env:CHANNEL_ACCESS_TOKEN}
+      DB_HOST: ${env:DB_HOST}
+      DB_PASSWORD: ${env:DB_PASSWORD}
+    events:
+      - http:
+          path: noti/{server}/{phase}
+          method: post
+          request:
+            parameters:
+              paths:
+                server: true
+                phase: true
+      - http:
+          path: webhook
+          method: post
+      - cloudwatchLog: '/limervot'
+

@@ -73,7 +73,7 @@ app.post('/noti/:server/:phase', (req, res) => {
 const help = `안녕하세요!
 @[on/off] [server] [phase]로 알람을 조정하고 @status로 상태를 확인할 수 있습니다.
 예) @on api all`;
-const allOfServers = ['admin', 'api', 'batch', 'billing', 'external-admin', 'web', 'worker', 'es'];
+const allOfServers = ['admin', 'api', 'batch', 'billing', 'external-admin', 'web', 'worker', 'es', 'batch-billing', 'batch-search'];
 const allOfPhases = ['alpha', 'beta', 'rc', 'real'];
 const onoff = /@(on|off) ([a-z\-]+) ([a-z\-]+)/;
 

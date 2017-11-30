@@ -75,7 +75,7 @@ const help = `안녕하세요!
 예) @on api all`;
 const allOfServers = ['admin', 'api', 'batch', 'billing', 'external-admin', 'web', 'worker', 'es', 'batch-billing', 'batch-search'];
 const allOfPhases = ['alpha', 'beta', 'rc', 'real'];
-const onoff = /@(on|off) ([a-z\-]+) ([a-z\-]+)/;
+const onoff = /@(on|off) ([a-z\-.0-9]+) ([a-z\-.0-9]+)/;
 
 function handleEvent(event) {
   console.log(event);
@@ -128,7 +128,7 @@ function handleEvent(event) {
     }
   }
   else if ('@status' === text) {
-    return query(`SELECT GROUP_CONCAT(CONCAT(server, '[', phase, ']') ORDER BY server, phase SEPARATOR ', ') AS status FROM subs WHERE id='${id}' GROUP BY id`)
+    return query(`SELECT GROUP_CONCAT(CONCAT(server, '[', phase, ']') ORDER BY server, phase SEPARATOR '\n') AS status FROM subs WHERE id='${id}' GROUP BY id`)
       .then(res => {
         const subs = res[0];
         const status = subs && subs.status ? subs.status : 'empty';
@@ -137,6 +137,12 @@ function handleEvent(event) {
           text: status
         });
       });
+  }
+  else if ('@help' === text) {
+    return client.replyMessage(event.replyToken, {
+      type: 'text',
+      text: help
+    });
   }
   return Promise.resolve(null);
 }
